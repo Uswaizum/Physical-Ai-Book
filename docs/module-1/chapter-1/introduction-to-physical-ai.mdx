@@ -1,0 +1,110 @@
+---
+title: "Introduction to Physical AI"
+description: "Understanding the fundamentals of Physical AI and its applications in robotics"
+sidebar_position: 2
+---
+
+import { PersonalizeButton, UrduTranslateButton } from '@site/src/components';
+
+# Introduction to Physical AI
+
+<PersonalizeButton chapterId="module-1/chapter-1" />
+<UrduTranslateButton chapterId="module-1/chapter-1" />
+
+## Learning Objectives
+
+By the end of this chapter, you will be able to:
+- Define Physical AI and distinguish it from traditional AI
+- Explain the importance of embodiment in artificial intelligence
+- Identify key applications of Physical AI in robotics
+- Understand the relationship between perception, action, and learning
+
+## What is Physical AI?
+
+Physical AI is a field of artificial intelligence that focuses on creating intelligent systems that interact with the physical world. Unlike traditional AI systems that operate primarily in digital domains, Physical AI systems must navigate, understand, and manipulate real-world environments.
+
+### Key Characteristics
+
+1. **Embodiment**: Physical AI systems have physical forms that interact with the environment
+2. **Real-time Processing**: They must respond to environmental changes in real-time
+3. **Sensorimotor Integration**: They combine sensory input with motor output
+4. **Adaptation**: They learn and adapt to changing physical conditions
+
+## The Importance of Embodiment
+
+Embodiment plays a crucial role in Physical AI because:
+
+- **Perception through Action**: Physical systems learn about their environment through interaction
+- **Morphological Computation**: The physical form contributes to computation and control
+- **Emergent Behaviors**: Complex behaviors emerge from the interaction between the system and environment
+
+## Applications in Robotics
+
+Physical AI has numerous applications in robotics:
+
+- **Humanoid Robots**: Creating robots that can navigate human environments
+- **Industrial Automation**: Smart robots that can adapt to changing manufacturing conditions
+- **Assistive Robotics**: Robots that assist humans in daily tasks
+- **Exploration Robots**: Robots for space, deep sea, or disaster site exploration
+
+## Challenges and Considerations
+
+Physical AI systems face unique challenges:
+
+- **Uncertainty**: Real-world environments are inherently uncertain
+- **Safety**: Physical systems must operate safely around humans and property
+- **Efficiency**: Energy efficiency is critical for mobile systems
+- **Robustness**: Systems must handle unexpected situations
+
+## Lab Exercise: Simple Sensorimotor Loop
+
+Let's implement a simple sensorimotor loop to understand the basics:
+
+```python
+class SimpleRobot:
+    def __init__(self):
+        self.sensors = {"distance": 0}
+        self.motors = {"left_wheel": 0, "right_wheel": 0}
+
+    def sense(self):
+        # In a real robot, this would read from actual sensors
+        self.sensors["distance"] = self.simulate_distance_sensor()
+
+    def act(self):
+        # Simple behavior: move forward if clear, turn if obstacle detected
+        if self.sensors["distance"] > 10:  # No obstacle ahead
+            self.motors["left_wheel"] = 50
+            self.motors["right_wheel"] = 50
+        else:  # Obstacle detected
+            self.motors["left_wheel"] = -30
+            self.motors["right_wheel"] = 30
+
+    def simulate_distance_sensor(self):
+        # Simulated sensor reading
+        import random
+        return random.randint(1, 50)
+
+# Create and run the robot
+robot = SimpleRobot()
+for step in range(10):
+    robot.sense()
+    robot.act()
+    print(f"Step {step}: Distance={robot.sensors['distance']}, "
+          f"Motors=({robot.motors['left_wheel']}, {robot.motors['right_wheel']})")
+```
+
+## Quiz
+
+1. What distinguishes Physical AI from traditional AI?
+2. Name three key characteristics of Physical AI systems.
+3. Why is embodiment important in Physical AI?
+
+## References
+
+- Pfeifer, R., & Bongard, J. (2006). How the Body Shapes the Way We Think
+- Brooks, R. A. (1991). Intelligence without representation
+- Clark, A. (2008). Supersizing the Mind: Embodiment, Action, and Cognitive Extension
+
+## Next Steps
+
+In the next chapter, we'll explore the fundamentals of robotics design and how Physical AI principles apply to creating effective robotic systems.

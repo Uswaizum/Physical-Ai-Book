@@ -1,0 +1,199 @@
+---
+title: "Humanoid Robot Design Principles"
+description: "Understanding the engineering principles behind humanoid robot design"
+sidebar_position: 4
+---
+
+import { PersonalizeButton, UrduTranslateButton } from '@site/src/components';
+
+# Humanoid Robot Design Principles
+
+<PersonalizeButton chapterId="module-2/chapter-1" />
+<UrduTranslateButton chapterId="module-2/chapter-1" />
+
+## Learning Objectives
+
+By the end of this chapter, you will be able to:
+- Analyze the design trade-offs in humanoid robot development
+- Understand kinematic and dynamic principles in humanoid locomotion
+- Evaluate different actuator technologies for humanoid robots
+- Design basic control systems for humanoid balance
+
+## Introduction to Humanoid Robot Design
+
+Humanoid robots are designed to mimic human form and behavior, providing advantages in human environments and interactions. However, this design approach presents unique engineering challenges that must be carefully addressed.
+
+### Design Considerations
+
+1. **Degrees of Freedom (DOF)**: Balancing complexity with functionality
+2. **Center of Mass**: Critical for stability and balance
+3. **Actuator Selection**: Trade-offs between power, precision, and weight
+4. **Sensing**: Comprehensive perception for safe human interaction
+5. **Safety**: Ensuring safe operation around humans
+
+## Kinematics of Humanoid Robots
+
+Humanoid robots typically have similar kinematic structures to humans, with limbs that can be modeled using Denavit-Hartenberg parameters.
+
+### Forward Kinematics
+
+Forward kinematics calculates the end-effector position given joint angles.
+
+```python
+import numpy as np
+import math
+
+def dh_transform(a, alpha, d, theta):
+    """Calculate Denavit-Hartenberg transformation matrix"""
+    return np.array([
+        [math.cos(theta), -math.sin(theta)*math.cos(alpha), math.sin(theta)*math.sin(alpha), a*math.cos(theta)],
+        [math.sin(theta), math.cos(theta)*math.cos(alpha), -math.cos(theta)*math.sin(alpha), a*math.sin(theta)],
+        [0, math.sin(alpha), math.cos(alpha), d],
+        [0, 0, 0, 1]
+    ])
+
+def forward_kinematics(joint_angles, dh_params):
+    """Calculate end-effector position from joint angles"""
+    T = np.eye(4)  # Identity matrix
+
+    for i, (a, alpha, d, theta_offset) in enumerate(dh_params):
+        T_i = dh_transform(a, alpha, d, joint_angles[i] + theta_offset)
+        T = T @ T_i
+
+    return T
+
+# Example: Simple 3-DOF arm
+dh_params_arm = [
+    (0, math.pi/2, 0.1, 0),      # Shoulder joint
+    (0.3, 0, 0, 0),              # Elbow joint
+    (0.25, 0, 0, 0)              # Wrist joint
+]
+
+joint_angles = [math.pi/4, math.pi/6, math.pi/3]  # 45°, 30°, 60°
+end_effector_pose = forward_kinematics(joint_angles, dh_params_arm)
+print(f"End-effector pose:\n{end_effector_pose}")
+```
+
+### Inverse Kinematics
+
+Inverse kinematics calculates required joint angles to achieve a desired end-effector position.
+
+```python
+def inverse_kinematics_2d(target_x, target_y, l1, l2):
+    """Solve inverse kinematics for a 2D planar arm"""
+    # Calculate distance to target
+    r = math.sqrt(target_x**2 + target_y**2)
+
+    # Check if target is reachable
+    if r > l1 + l2:
+        # Target is too far
+        target_x = target_x * (l1 + l2) / r
+        target_y = target_y * (l1 + l2) / r
+        r = l1 + l2
+
+    if r < abs(l1 - l2):
+        # Target is too close
+        return None
+
+    # Calculate joint angles
+    cos_theta2 = (l1**2 + l2**2 - r**2) / (2 * l1 * l2)
+    theta2 = math.acos(max(-1, min(1, cos_theta2)))  # Clamp to [-1, 1]
+
+    k1 = l1 + l2 * math.cos(theta2)
+    k2 = l2 * math.sin(theta2)
+
+    theta1 = math.atan2(target_y, target_x) - math.atan2(k2, k1)
+
+    return theta1, theta2
+
+# Example: 2-link arm
+l1, l2 = 0.5, 0.4  # Link lengths
+target = (0.6, 0.3)  # Target position
+
+angles = inverse_kinematics_2d(target[0], target[1], l1, l2)
+if angles:
+    theta1, theta2 = angles
+    print(f"Required joint angles: {math.degrees(theta1):.2f}°, {math.degrees(theta2):.2f}°")
+else:
+    print("Target position is not reachable")
+```
+
+## Balance and Locomotion
+
+Maintaining balance is one of the most challenging aspects of humanoid robotics.
+
+### Center of Mass (CoM) Control
+
+```python
+class BalanceController:
+    def __init__(self, robot_mass, gravity=9.81):
+        self.mass = robot_mass
+        self.gravity = gravity
+        self.com_position = np.array([0.0, 0.0, 0.8])  # Initial CoM position
+        self.com_velocity = np.array([0.0, 0.0, 0.0])
+        self.com_acceleration = np.array([0.0, 0.0, 0.0])
+
+        # Control parameters
+        self.kp = 100  # Proportional gain
+        self.kd = 20   # Derivative gain
+
+    def update_balance(self, current_com, target_com, dt):
+        """Update balance control based on CoM position"""
+        # Calculate error
+        error = target_com - current_com
+        error_derivative = (error - self.com_velocity) / dt if dt > 0 else np.zeros(3)
+
+        # PID control
+        control_force = self.kp * error + self.kd * error_derivative
+
+        # Update state
+        self.com_acceleration = control_force / self.mass
+        self.com_velocity += self.com_acceleration * dt
+        self.com_position += self.com_velocity * dt
+
+        return control_force
+
+# Example usage
+balance_ctrl = BalanceController(robot_mass=50.0)  # 50kg robot
+current_com = np.array([0.01, 0.02, 0.8])  # Slightly off balance
+target_com = np.array([0.0, 0.0, 0.8])     # Balanced position
+dt = 0.01  # 10ms time step
+
+control_force = balance_ctrl.update_balance(current_com, target_com, dt)
+print(f"Control force needed: {control_force}")
+```
+
+## Actuator Technologies
+
+Humanoid robots require precise, powerful, and safe actuators. Common technologies include:
+
+### Servo Motors
+- High precision and controllability
+- Good for fine manipulation tasks
+- Limited power-to-weight ratio
+
+### Series Elastic Actuators (SEA)
+- Built-in compliance for safety
+- Better force control
+- More complex mechanical design
+
+### Pneumatic Muscles
+- Human-like compliance
+- High power-to-weight ratio
+- Difficult to control precisely
+
+## Quiz
+
+1. What are the main challenges in humanoid robot balance control?
+2. Explain the difference between forward and inverse kinematics.
+3. Why is the center of mass critical in humanoid locomotion?
+
+## References
+
+- Kajita, S. (2005). Humanoid Robot (Introduction to Humanoid Robotics)
+- Sardain, P., & Bessonnet, G. (2004). Forces acting on a biped robot. Center of pressure-zero moment point
+- Hofmann, A., & Iagnemma, K. (2006). A control approach for actuated dynamic walking based on linearized dynamics
+
+## Next Steps
+
+In the next chapter, we'll explore control systems for humanoid robots, examining advanced techniques for coordinated movement and balance.

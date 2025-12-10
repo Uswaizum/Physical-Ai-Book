@@ -1,0 +1,122 @@
+.authContainer {
+  max-width: 400px;
+  margin: 2rem auto;
+  padding: 1.5rem;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background-color: #fafafa;
+}
+
+.formHeader {
+  margin-bottom: 1.5rem;
+}
+
+.formHeader h3 {
+  margin: 0 0 1rem 0;
+  color: #333;
+}
+
+.toggleButton {
+  background: none;
+  border: none;
+  color: #3578e5;
+  cursor: pointer;
+  padding: 0;
+  font-size: 14px;
+}
+
+.toggleButton:hover {
+  text-decoration: underline;
+}
+
+.formGroup {
+  margin-bottom: 1rem;
+}
+
+.formGroup label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+  color: #333;
+}
+
+.formGroup input,
+.formGroup select {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 16px;
+}
+
+.formGroup input:focus,
+.formGroup select:focus {
+  outline: none;
+  border-color: #3578e5;
+  box-shadow: 0 0 0 2px rgba(53, 120, 229, 0.2);
+}
+
+.backgroundInfo {
+  margin-top: 1.5rem;
+  padding: 1rem;
+  background-color: #f8f9fa;
+  border-radius: 4px;
+  border-left: 3px solid #3578e5;
+}
+
+.backgroundInfo h4 {
+  margin-top: 0;
+  color: #333;
+}
+
+.submitButton {
+  width: 100%;
+  background-color: #25c2a0;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 0.75rem 1rem;
+  font-size: 16px;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.submitButton:hover:not(:disabled) {
+  background-color: #21af90;
+}
+
+.submitButton:disabled {
+  background-color: #cccccc;
+  cursor: not-allowed;
+}
+
+.error {
+  color: #e3342f;
+  background-color: #fcebea;
+  padding: 0.75rem;
+  border-radius: 4px;
+  margin-bottom: 1rem;
+  border: 1px solid #ef5753;
+}
+
+.loggedIn {
+  text-align: center;
+}
+
+.loggedIn p {
+  margin-bottom: 1rem;
+  color: #25c2a0;
+}
+
+.logoutButton {
+  background-color: #e3342f;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+}
+
+.logoutButton:hover {
+  background-color: #cc1f1a;
+}

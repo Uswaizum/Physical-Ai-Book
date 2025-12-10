@@ -1,0 +1,205 @@
+---
+title: "Embodied Cognition in Robotics"
+description: "Exploring how physical embodiment influences cognitive processes in robots"
+sidebar_position: 3
+---
+
+import { PersonalizeButton, UrduTranslateButton } from '@site/src/components';
+
+# Embodied Cognition in Robotics
+
+<PersonalizeButton chapterId="module-1/chapter-2" />
+<UrduTranslateButton chapterId="module-1/chapter-2" />
+
+## Learning Objectives
+
+By the end of this chapter, you will be able to:
+- Explain the theory of embodied cognition and its relevance to robotics
+- Analyze how physical form influences cognitive processes
+- Design simple embodied cognitive systems
+- Evaluate the benefits of embodied approaches to AI
+
+## What is Embodied Cognition?
+
+Embodied cognition is a theory in cognitive science that posits that many features of cognition, whether human or otherwise, are shaped by aspects of the body beyond the brain. In robotics, this translates to designing systems where the physical form, sensors, and actuators are integral to the cognitive process, not just outputs of it.
+
+### Core Principles
+
+1. **Body-Brain Coupling**: Cognitive processes emerge from the tight coupling between body and environment
+2. **Morphological Computation**: Physical properties of the body contribute to computation
+3. **Situatedness**: Cognition is deeply tied to the environment in which it occurs
+4. **Emergence**: Complex behaviors emerge from simple local interactions
+
+## The Role of Morphology in Computation
+
+In embodied cognition, the physical form of a robot can perform computations that would otherwise require complex algorithms. This is known as morphological computation.
+
+### Examples of Morphological Computation
+
+- **Passive Dynamic Walkers**: Mechanical designs that walk stably without active control
+- **Compliant Mechanisms**: Bodies that adapt to terrain through physical compliance
+- **Tensegrity Structures**: Systems that maintain form through tension-compression balance
+
+## Sensorimotor Contingencies
+
+Sensorimotor contingencies refer to the relationship between motor commands and sensory feedback. In embodied cognition, understanding these contingencies is crucial for developing cognitive abilities.
+
+### Key Concepts
+
+- **Active Perception**: Perception that requires action to gather information
+- **Sensorimotor Learning**: Learning through the interaction between sensing and acting
+- **Affordances**: Opportunities for action provided by the environment
+
+## Practical Implementation: Adaptive Behavior
+
+Let's implement a simple embodied cognitive system that demonstrates sensorimotor learning:
+
+```python
+import math
+import random
+
+class EmbodiedCognitiveAgent:
+    def __init__(self):
+        self.sensors = {
+            "light": 0,
+            "proximity": 0,
+            "temperature": 25
+        }
+        self.actuators = {
+            "wheels": {"left": 0, "right": 0},
+            "gripper": 0
+        }
+        self.internal_state = {
+            "energy": 100,
+            "curiosity": 0.5,
+            "memory": []
+        }
+        self.learning_rate = 0.1
+
+    def sense(self):
+        """Sensory input processing"""
+        # Simulated sensor readings
+        self.sensors["light"] = self._read_light_sensor()
+        self.sensors["proximity"] = self._read_proximity_sensor()
+        self.sensors["temperature"] = self._read_temperature_sensor()
+
+    def _read_light_sensor(self):
+        return random.uniform(0, 100)
+
+    def _read_proximity_sensor(self):
+        return random.uniform(0, 100)
+
+    def _read_temperature_sensor(self):
+        return random.uniform(15, 35)
+
+    def cognitive_process(self):
+        """Simple cognitive processing based on sensorimotor contingencies"""
+        # Store previous state
+        previous_state = self.sensors.copy()
+
+        # Simple decision making based on sensor readings
+        if self.sensors["light"] > 70:
+            # Move toward light (phototaxis)
+            self.actuators["wheels"]["left"] = 30
+            self.actuators["wheels"]["right"] = 30
+        elif self.sensors["proximity"] < 20:
+            # Obstacle avoidance
+            self.actuators["wheels"]["left"] = -20
+            self.actuators["wheels"]["right"] = 20
+        else:
+            # Random exploration with bias toward novelty
+            self._explore_behavior()
+
+        # Update internal state based on environmental feedback
+        self._update_internal_state(previous_state)
+
+    def _explore_behavior(self):
+        """Behavior for exploration"""
+        if random.random() < self.internal_state["curiosity"]:
+            # Random movement to explore
+            self.actuators["wheels"]["left"] = random.randint(-30, 30)
+            self.actuators["wheels"]["right"] = random.randint(-30, 30)
+        else:
+            # Conservative movement
+            self.actuators["wheels"]["left"] = 10
+            self.actuators["wheels"]["right"] = 10
+
+    def _update_internal_state(self, previous_state):
+        """Update internal state based on environmental interaction"""
+        # Simple learning mechanism
+        novelty = self._calculate_novelty(previous_state)
+
+        # Increase curiosity if environment is novel
+        if novelty > 0.7:
+            self.internal_state["curiosity"] = min(1.0,
+                self.internal_state["curiosity"] + self.learning_rate * 0.1)
+        elif novelty < 0.3:
+            self.internal_state["curiosity"] = max(0.1,
+                self.internal_state["curiosity"] - self.learning_rate * 0.05)
+
+        # Store experience
+        experience = {
+            "sensors": previous_state.copy(),
+            "actuators": self.actuators.copy(),
+            "novelty": novelty
+        }
+        self.internal_state["memory"].append(experience)
+
+        # Keep memory size manageable
+        if len(self.internal_state["memory"]) > 100:
+            self.internal_state["memory"] = self.internal_state["memory"][-50:]
+
+    def _calculate_novelty(self, previous_state):
+        """Calculate how novel the current situation is"""
+        if not self.internal_state["memory"]:
+            return 1.0  # Novel if no memory
+
+        # Compare with recent experiences
+        recent_experiences = self.internal_state["memory"][-10:]
+        similarities = []
+
+        for exp in recent_experiences:
+            # Simple similarity calculation
+            sensor_diff = sum(abs(previous_state[k] - exp["sensors"][k])
+                            for k in previous_state.keys())
+            similarities.append(math.exp(-sensor_diff / 100))  # Convert to similarity
+
+        avg_similarity = sum(similarities) / len(similarities) if similarities else 0
+        return 1 - avg_similarity  # Novelty is inverse of similarity
+
+    def act(self):
+        """Execute actions based on cognitive processing"""
+        # In a real robot, this would send commands to physical actuators
+        print(f"Actuators: {self.actuators}")
+
+    def run_cycle(self):
+        """Complete sensorimotor cycle"""
+        self.sense()
+        self.cognitive_process()
+        self.act()
+
+# Demonstration
+agent = EmbodiedCognitiveAgent()
+print("Embodied Cognitive Agent running for 10 cycles:")
+for i in range(10):
+    print(f"\nCycle {i+1}:")
+    print(f"  Sensors: {agent.sensors}")
+    print(f"  Internal State: {agent.internal_state}")
+    agent.run_cycle()
+```
+
+## Quiz
+
+1. What is morphological computation and why is it important in embodied cognition?
+2. Explain the concept of sensorimotor contingencies and provide an example.
+3. How does embodied cognition differ from traditional symbolic AI approaches?
+
+## References
+
+- Clark, A. (2008). Supersizing the Mind: Embodiment, Action, and Cognitive Extension
+- Pfeifer, R., & Scheier, C. (1999). Understanding Intelligence
+- Thompson, E. (2007). Mind in Life: Biology, Phenomenology, and the Sciences of Mind
+
+## Next Steps
+
+In the next module, we'll explore the technical implementation of humanoid robots, examining the engineering challenges and solutions in creating embodied systems.

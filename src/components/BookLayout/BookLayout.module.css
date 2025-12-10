@@ -1,0 +1,30 @@
+.bookLayout {
+  position: relative;
+  min-height: 100vh;
+}
+
+.contentWrapper {
+  padding-bottom: 80px; /* Space for the chat widget */
+}
+
+.toolbar {
+  display: flex;
+  gap: 12px;
+  margin: 1rem 0;
+  flex-wrap: wrap;
+}
+
+.mainContent {
+  /* Inherits the default Docusaurus styling */
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .toolbar {
+    flex-direction: column;
+  }
+
+  .toolbar > * {
+    width: 100%;
+  }
+}

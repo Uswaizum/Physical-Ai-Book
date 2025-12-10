@@ -1,0 +1,34 @@
+.translateContainer {
+  display: inline-block;
+  margin: 1rem 0;
+}
+
+.translateButton {
+  background-color: #ff6b6b;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  padding: 8px 16px;
+  cursor: pointer;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.translateButton:hover:not(:disabled) {
+  background-color: #ff5252;
+}
+
+.translateButton:disabled {
+  background-color: #cccccc;
+  cursor: not-allowed;
+}
+
+.translated {
+  background-color: #4ecdc4;
+}
+
+.translated:hover:not(:disabled) {
+  background-color: #3db9b1;
+}
