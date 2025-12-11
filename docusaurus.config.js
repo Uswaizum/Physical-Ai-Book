@@ -11,8 +11,8 @@ const darkCodeTheme = require('prism-react-renderer/themes/dracula');
   onBrokenLinks: 'warn',
   onBrokenMarkdownLinks: 'warn',
   favicon: 'img/favicon.ico',
-  organizationName: 'physical-ai-book', // Usually your GitHub org/user name.
-  projectName: 'physical-ai-textbook', // Usually your repo name.
+  organizationName: 'Uswaizum', // Usually your GitHub org/user name.
+  projectName: 'Physical-Ai-Book', // Usually your repo name.
 
   presets: [
     [
@@ -22,7 +22,7 @@ const darkCodeTheme = require('prism-react-renderer/themes/dracula');
         docs: {
           sidebarPath: require.resolve('./sidebars.js'),
           // Please change this to your repo.
-          editUrl: 'https://github.com/physical-ai-book/physical-ai-textbook/edit/main/docusaurus/',
+          editUrl: 'https://github.com/Uswaizum/Physical-Ai-Book/edit/main/',
         },
         theme: {
           customCss: require.resolve('./src/css/custom.css'),
@@ -75,7 +75,7 @@ const darkCodeTheme = require('prism-react-renderer/themes/dracula');
             items: [
               {
                 label: 'GitHub Repository',
-                href: 'https://github.com/physical-ai-book/physical-ai-textbook',
+                href: 'https://github.com/Uswaizum/Physical-Ai-Book',
               },
               {
                 label: 'Physical AI Research',
