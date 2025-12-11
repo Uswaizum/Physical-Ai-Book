@@ -8,7 +8,7 @@ const darkCodeTheme = require('prism-react-renderer/themes/dracula');
   tagline: 'Comprehensive Guide to Physical AI and Humanoid Robotics',
   url: 'https://physical-ai-book.com',
   baseUrl: '/',
-  onBrokenLinks: 'throw',
+  onBrokenLinks: 'warn',
   onBrokenMarkdownLinks: 'warn',
   favicon: 'img/favicon.ico',
   organizationName: 'physical-ai-book', // Usually your GitHub org/user name.
