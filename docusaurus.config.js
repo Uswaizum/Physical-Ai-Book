@@ -24,12 +24,6 @@ const darkCodeTheme = require('prism-react-renderer/themes/dracula');
           // Please change this to your repo.
           editUrl: 'https://github.com/physical-ai-book/physical-ai-textbook/edit/main/docusaurus/',
         },
-        blog: {
-          showReadingTime: true,
-          // Please change this to your repo.
-          editUrl:
-            'https://github.com/physical-ai-book/physical-ai-textbook/edit/main/docusaurus/blog/',
-        },
         theme: {
           customCss: require.resolve('./src/css/custom.css'),
         },
@@ -67,11 +61,11 @@ const darkCodeTheme = require('prism-react-renderer/themes/dracula');
                 to: '/docs/intro',
               },
               {
-                label: 'Physical AI Fundamentals',
+                label: 'Chapter 1: Fundamentals',
                 to: '/docs/chapter-1-fundamentals',
               },
               {
-                label: 'Humanoid Robotics',
+                label: 'Chapter 2: Robotics Design',
                 to: '/docs/chapter-2-robotics-design',
               },
             ],
@@ -90,19 +84,6 @@ const darkCodeTheme = require('prism-react-renderer/themes/dracula');
               {
                 label: 'Robotics Education',
                 href: 'https://www.ieee-ras.org/',
-              },
-            ],
-          },
-          {
-            title: 'Legal',
-            items: [
-              {
-                label: 'Privacy Policy',
-                href: '/privacy',
-              },
-              {
-                label: 'Terms of Service',
-                href: '/terms',
               },
             ],
           },
