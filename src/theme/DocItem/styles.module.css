@@ -1,0 +1,23 @@
+/**
+ * Styles for custom DocItem component
+ */
+
+.docItemContainer {
+  max-width: 100%;
+}
+
+.docItemCol {
+  max-width: 75% !important;
+  flex: 0 0 75%;
+}
+
+@media (max-width: 996px) {
+  .docItemCol {
+    max-width: 100% !important;
+    flex: 0 0 100%;
+  }
+}
+
+.tocMobile {
+  padding: 0.5rem 0 0 0;
+}

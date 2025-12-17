@@ -1,5 +1,6 @@
 import React from 'react';
-import { ChatWidget, PersonalizeButton, UrduTranslateButton } from '../index';
+import { PersonalizeButton, UrduTranslateButton } from '../index';
+import RAGChatWidget from '../RAGChatWidget';
 import styles from './BookLayout.module.css';
 
 const BookLayout = ({ children, chapterId }) => {
@@ -23,7 +24,7 @@ const BookLayout = ({ children, chapterId }) => {
       </div>
 
       {/* Chat widget floating */}
-      <ChatWidget />
+      <RAGChatWidget />
     </div>
   );
 };
