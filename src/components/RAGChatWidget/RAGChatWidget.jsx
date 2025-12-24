@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import styles from './RAGChatWidget.module.css';
 
 const RAGChatWidget = () => {
@@ -13,11 +13,20 @@ const RAGChatWidget = () => {
   const [inputValue, setInputValue] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
+  // Create a ref to hold the current messages state
+  const messagesRef = useRef(messages);
+  // Update the ref whenever messages change
+  useEffect(() => {
+    messagesRef.current = messages;
+  }, [messages]);
+
   const toggleChat = () => {
+    console.log('Toggle chat clicked, current isOpen:', isOpen);
     setIsOpen(!isOpen);
   };
 
   const sendMessage = async () => {
+    console.log('Send message called, inputValue:', inputValue, 'isLoading:', isLoading);
     if (!inputValue.trim() || isLoading) return;
 
     const userMessage = { text: inputValue, sender: 'user', timestamp: new Date() };
@@ -26,8 +35,11 @@ const RAGChatWidget = () => {
     setIsLoading(true);
 
     try {
-      // Call the RAG backend API - using the environment variable for the backend URL
-      const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || 'http://localhost:8000';
+      // Call the RAG backend API - using window.env or default URL for browser
+      const BACKEND_URL = typeof window !== 'undefined' && window.ENV && window.ENV.REACT_APP_BACKEND_URL
+        ? window.ENV.REACT_APP_BACKEND_URL
+        : 'http://localhost:8000';
+      console.log('Making API call to:', `${BACKEND_URL}/query`, 'with query:', inputValue);
       const response = await fetch(`${BACKEND_URL}/query`, {
         method: 'POST',
         headers: {
@@ -36,7 +48,7 @@ const RAGChatWidget = () => {
         body: JSON.stringify({
           query: inputValue,
           user_id: localStorage.getItem('user_id') || 'anonymous',
-          context: messages.length > 0 ? messages.slice(-3).map(m => `${m.sender}: ${m.text}`).join('\n') : null,
+          context: messagesRef.current.length > 0 ? messagesRef.current.slice(-3).map(m => `${m.sender}: ${m.text}`).join('\n') : null,
           parameters: {
             top_k: 5,
             threshold: 0.5
@@ -44,7 +56,9 @@ const RAGChatWidget = () => {
         }),
       });
 
+      console.log('Response received:', response.status);
       const data = await response.json();
+      console.log('Response data:', data);
 
       if (!response.ok) {
         throw new Error(data.detail || `Backend error: ${response.status} ${response.statusText}`);
@@ -60,8 +74,11 @@ const RAGChatWidget = () => {
       setMessages(prev => [...prev, botMessage]);
     } catch (error) {
       console.error('Error sending message:', error);
+      const BACKEND_URL = typeof window !== 'undefined' && window.ENV && window.ENV.REACT_APP_BACKEND_URL
+        ? window.ENV.REACT_APP_BACKEND_URL
+        : 'http://localhost:8000';
       const errorMessage = {
-        text: `Sorry, I encountered an error: ${error.message}. Please make sure the RAG backend service is running at ${process.env.REACT_APP_BACKEND_URL || 'http://localhost:8000'}.`,
+        text: `Sorry, I encountered an error: ${error.message}. Please make sure the RAG backend service is running at ${BACKEND_URL}.`,
         sender: 'bot',
         timestamp: new Date(),
       };

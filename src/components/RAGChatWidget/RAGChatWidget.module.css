@@ -6,7 +6,7 @@
 }
 
 .chatButton {
-  background-color: #25c2a0;
+  background-color: #4a6cf7; /* Royal blue */
   color: white;
   border: none;
   border-radius: 50%;
@@ -35,7 +35,7 @@
 }
 
 .chatHeader {
-  background: #25c2a0;
+  background: #4a6cf7; /* Royal blue */
   color: white;
   padding: 16px;
   display: flex;
@@ -81,7 +81,7 @@
 
 .userMessage {
   align-self: flex-end;
-  background-color: #25c2a0;
+  background-color: #4a6cf7; /* Royal blue */
   color: white;
   border-bottom-right-radius: 4px;
 }
@@ -110,7 +110,7 @@
 }
 
 .sourceItem a {
-  color: #25c2a0;
+  color: #4a6cf7; /* Royal blue */
   text-decoration: none;
 }
 
@@ -160,7 +160,7 @@
 }
 
 .sendButton {
-  background-color: #25c2a0;
+  background-color: #4a6cf7; /* Royal blue */
   color: white;
   border: none;
   border-radius: 8px;
